@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="ConneX | Reffer And Earn Money">
+  <meta property="og:site_name" content="ConneX | Reffer And Earn Money">
+  <meta property="og:url" content="https://connexr.github.io/ConneX/ConneX">
+  <meta property="og:description" content="Reffer & Earn Money | Cash Out Platform Bkash & Nagad | Web Based Platform | ConneX">
+  <meta property="og:type" content=website>
+  <meta property="og:image" content=asset/cover.webp>
+  <!--=============== BOXICONS ===============-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="shortcut icon" href="./asset/Logo.ico" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
+  <!--=============== CSS ===============-->
+  <link rel="stylesheet" href="./cssjs/toast.css">
+  <link rel="stylesheet" href="cssjs/profile.css">
+  <link rel="stylesheet" href="cssjs/style.css">
+
+  <title>ConneX</title>
+</head>
+
+<body>
+  <ul class="notifications"></ul>
+  <!--=============== HEADER ===============-->
+  <header class="header scroll-header" id="header">
+    <nav class="nav container">
+      <a href="#" class="nav__logo" style="font-family: 'Cinzel Decorative', cursive;">Connex</a>
+
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a onclick="home()" class="nav__link active-link" id="active1">
+              <i class='bx bx-home-alt nav__icon'></i>
+              <span class="nav__name">Home</span>
+            </a>
+          </li>
+
+          <li class="nav__item">
+            <a onclick="money()" id="active2" class="nav__link">
+              <i class='bx bx-credit-card nav__icon'></i>
+              <span class="nav__name">Wallet</span>
+            </a>
+          </li>
+
+          <li class="nav__item">
+            <a onclick="history()" id="active3" class="nav__link">
+              <i class='bx bx-history nav__icon'></i>
+              <span class="nav__name">History</span>
+            </a>
+          </li>
+
+          <li class="nav__item">
+            <a onclick="profile()" id="active4" class="nav__link">
+              <i class='bx bx-user nav__icon'></i>
+              <span class="nav__name">Profile</span>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+      <div class="log_out">
+        <i id="log_out" class="fa-solid fa-right-from-bracket"></i>
+        <img src="asset/Logo.png" alt="ConneX Logo" class="nav__img">
+      </div>
+
+    </nav>
+  </header>
+
+  <main>
+
+    <!--=============== HOME ===============-->
+    <section class="container section section__height" id="section">
+    </section>
+
+  </main>
+
+
+  <!--=============== MAIN JS ===============-->
+  <script src="./cssjs/toast.js" defer></script>
+  <script>
+    let section = document.getElementById('section');
+    
+    function loading() {
+      var loading = `<div class="dots">
+          <span style="--i:1;"></span>
+          <span style="--i:2;"></span>
+          <span style="--i:3;"></span>
+          <span style="--i:4;"></span>
+          <span style="--i:5;"></span>
+          <span style="--i:6;"></span>
+          <span style="--i:7;"></span>
+          <span style="--i:8;"></span>
+          <span style="--i:9;"></span>
+          <span style="--i:10;"></span>
+          <span style="--i:11;"></span>
+          <span style="--i:12;"></span>
+          <span style="--i:13;"></span>
+          <span style="--i:14;"></span>
+          <span style="--i:15;"></span>
+        </div>`
+      section.innerHTML = loading;
+    };
+
+    function home() {
+      loading()
+      fetch('asset/user.json')
+        .then(response => response.json())
+        .then(data => {
+          const home = `<div class="running-text-container">
+        <p class="running-text">${data.notifi}</p>
+      </div>
+      <div class="youtube">
+        <h1>Tutorial Vedio</h1>
+        <iframe width="100%" height="300px" src="${data.youtube}" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="official">
+        <h1>Official Platform</h1>
+        <div class="social">
+          <a href="${data.tele}">
+            <i class='bx bxl-telegram'></i>
+            <span>Telegram</span>
+          </a>
+          <a href="${data.fb}">
+            <i class='bx bxl-facebook-circle'></i>
+            <span>Facebook page</span>
+          </a>
+          <a href="${data.mes}">
+            <i class='bx bxl-messenger'></i>
+            <span>Messenger</span>
+          </a>
+          <a href="${data.you}">
+            <i class='bx bxl-youtube'></i>
+            <span>YouTube</span>
+          </a>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="copyright">
+          &copy; 2023 Connex . All rights reserved.
+        </div>
+        <div class="terms">
+          <a href="term.html">Terms & Conditions</a>
+        </div>
+      </div>`
+          section.innerHTML = home;
+          add_remove('active1')
+
+
+        })
+        .catch(error => {
+          console.error('Error fetching JSON:', error);
+        });
+
+    }
+
+    function money() {
+      const money = `<div class="wallet">
+        <div class="card">
+          <div class="card-front">
+            <!-- Wallet front content -->
+            <h2>My Wallet</h2>
+            <p>Balance: ${taka}  <i>Tk</i></p>
+          </div>
+        </div>
+      </div>
+      <div class="wallet">
+        <div class="card">
+          <div class="withdrawal-button" onclick="withdraw()">
+            <span>Withdraw</span>
+          </div>
+        </div>
+      </div>`;
+
+      section.innerHTML = money;
+      add_remove('active2');
+
+    }
+
+    function history() {
+      loading()
+      var useragent = navigator.userAgent;
+      var cookie_admin = localStorage.getItem('_cookie_adm');
+      var link = "https://script.google.com/macros/s/AKfycbwOJLZZ-0MkaieFWlsswTNRwRkVQjX83k0DAeEN70Ew9GQwsrw2_OmE2ntnXon9kksl/exec";
+      const queryParams = new URLSearchParams({
+        cookie_adm: cookie_admin,
+        userAgent: useragent
+      });
+      
+      const url = `${link}?${queryParams}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => reTurn2(data.data))
+        .catch(error => createToast('error', 'Network Error !'));
+    };
+
+    function reTurn2(data) {
+      add_remove('active3');
+      var history = `<div class="coloum">
+
+                  <div class="column">ID</div>
+                  <div class="column">Amount</div>
+                  <div class="column">Date</div>
+                  <div class="column">Status</div>
+                </div>`;
+
+      for (let i = data.length - 1; i > 0; i--) {
+        // This will print the numbers 0 to 4.
+        var id = pad(data[i][0], 6, '0');
+
+        var inputDate = new Date(data[i][5]);
+        var months = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        var day = inputDate.getUTCDate();
+        var month = months[inputDate.getUTCMonth()];
+
+        var date = `${day} ${month}`;
+
+
+        var pend;
+        if (data[i][6]) {
+          pend = 'Pending ❌'
+        } else {
+          pend = 'Success ✅'
+        }
+
+        //console.log(date)
+
+        history += `<div class="coloum">
+                                  <div class="column">${id}</div>
+                                  <div class="column">${data[i][4]}</div>
+                                  <div class="column">${date}</div>
+                                  <div class="column">${pend}</div>
+                                </div>`;
+        section.innerHTML = history
+      }
+      section.style.marginBottom = '50px';
+      //section.innerHTML = history;
+
+    }
+
+    function profile() {
+      const profile = `<div class="profile-card">
+
+        <div class="image">
+
+          <img src="https://drive.google.com/uc?export=download&id=${profilelink}" alt="Profile Pic" class="profile-img" id="imgpro"/>
+        </div>
+
+        <div class="text-data">
+          <span class="name">${username}</span>
+          <span class="job">ID : ${userid}</span>
+          <span class="job">Total Reffer : ${tref}</span>
+          <span class="data">Email : <span>${usermail}</span></span>
+          <span class="data">Division : <span>${userdivision}</span></span>
+          <span class="data">Created On : <span>${userdate}</span></span>
+          <span class="data">Reffered By : <span>${refferid}</span></span>
+          <span class="name">Change Password</span>
+          <span class="proint">
+            <label for="input">
+              Current Password : <input type="password" id="password11"><i id="eye2" class="fa-solid fa-eye"  onclick="passShow('password11','eye2')"></i>
+            </label>
+          </span>
+          <span class="proint">
+            <label for="input">
+              New Password : <input type="password" id="password22"><i id="eye12" class="fa-solid fa-eye"  onclick="passShow('password22','eye12')"></i>
+            </label>
+          </span>
+        
+        <div class="buttons">
+          <button class="button" onclick="changePass()">Change</button>
+        </div>
+        
+        <span class="name2">Change Profile Picture</span>
+        <input type="file" id="fileSeam">
+        <div class="buttons" id="buttons">
+        </div>
+      </div>
+      </div>`;
+      add_remove('active4');
+      section.innerHTML = profile;
+
+      uploadData()
+    }
+
+
+    function withdraw() {
+      const withdraw = `<section class="input-content">
+        <h2>Withdraw Platform: <span>Bkash</span><span>Nagad</span></h2>
+        <div class="input-content-wrap">
+          <dl class="inputbox">
+            <dt class="inputbox-title">Out By</dt>
+            <dd class="inputbox-content">
+              
+              <select id="admin">
+                <option value="adm1">Admin #1</option>
+                <option value="adm2">Admin #2</option>
+                <option value="adm3">Admin #3</option>
+                <option value="adm4">Admin #4</option>
+              </select>
+            </dd>
+          </dl>
+          <dl class="inputbox">
+
+            <dt class="inputbox-title">Withdrawl   </dt>
+            <dd class="inputbox-content">
+              
+              <select id="bkash">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+              </select>
+            </dd>
+          </dl>
+          <dl class="inputbox">
+            <dt class="inputbox-title">Number</dt>
+            <dd class="inputbox-content">
+              <input id="input0" type="tel" required />
+              <label for="input0">Number</label>
+              <span class="underline"></span>
+            </dd>
+          </dl>
+          <dl class="inputbox">
+            <dt class="inputbox-title">Amount </dt>
+            <dd class="inputbox-content">
+              <input id="input1" type="tel" required />
+              <label for="input1">Minimum Amount 100</label>
+              <span class="underline"></span>
+            </dd>
+          </dl>
+          <div class="btns">
+            <button class="btn btn-confirm" onclick="cashout()">Submit</button>
+            <button class="btn btn-cancel" onclick="money()">Cancel</button>
+          </div>
+        </div>
+      </section>`;
+
+      section.innerHTML = withdraw;
+    }
+
+
+    function add_remove(vari) {
+      const navItems = document.querySelectorAll('.nav__link');
+
+      navItems.forEach(item => {
+        item.classList.remove('active-link');
+      });
+      document.getElementById(`${vari}`).classList.add('active-link')
+    };
+  </script>
+  <script src="cssjs/main.js"></script>
+
+</body>
+
+</html>

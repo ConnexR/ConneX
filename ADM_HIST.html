@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="ConneX | Reffer And Earn Money">
+  <meta property="og:site_name" content="ConneX | Reffer And Earn Money">
+  <meta property="og:url" content="https://connexr.github.io/ConneX/ConneX">
+  <meta property="og:description" content="Reffer & Earn Money | Cash Out Platform Bkash & Nagad | Web Based Platform | ConneX">
+  <meta property="og:type" content=website>
+  <meta property="og:image" content=asset/cover.webp>
+  <!--=============== BOXICONS ===============-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="shortcut icon" href="./asset/Logo.ico" type="image/x-icon" />
+  <title>Admin Page | History</title>
+  <!-- Add Bootstrap CSS link -->
+  <link rel="stylesheet" href="cssjs/bootstrap5.0.1.min.css">
+  <!-- Add Bootstrap JavaScript and Popper.js -->
+  <script src="cssjs/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="cssjs/adm_style.css">
+  <link rel="stylesheet" href="cssjs/toast.css">
+</head>
+
+<body>
+  <ul class="notifications"></ul>
+  <!-- Delete Confirmation Modal -->
+  <div class="container-fluid">
+    <h1>Admin Panel | ConneX | History<i onclick="window.location.href = `${window.location.origin}/AV2.html`" class="fa-solid fa-repeat"></i></h1>
+    <div class="col">
+      <div class="row-md-6 mb-3 mb-md-0 d-flex justify-content-between align-items-center">
+        <!-- Button to open the Add User modal -->
+        <div id="taccount">
+          T Account: ---
+        </div>
+        <!-- Dropdown for selecting search criteria -->
+        <select id="searchCriteria" class="form-select form-select-sm" style="max-width: 150px">
+          <option value="id">ID</option>
+          <option value="byadm">By_Adm</option>
+          <option value="method">Method</option>
+          <option value="number">Number</option>
+          <option value="amount">Amount</option>
+          <option value="date">Date</option>
+          <option value="status">Status</option>
+        </select>
+      </div>
+      <div class="row-md-6 d-flex align-items-center justify-content-center">
+        <!-- Input box for search -->
+        <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Search...">
+      </div>
+    </div>
+
+
+    <table id="dynamicTable" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>By_Adm</th>
+          <th>Method</th>
+          <th>Number</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th class="editbtn">Action</th> <!-- Added a new column for Edit and Delete buttons -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="7">Nothing to see</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="footer bg-light text-dark d-flex justify-content-center align-items-center">
+    <div>
+      <p class="m-0">&copy; 2023 ConneX</p>
+    </div>
+  </footer>
+  <script src="cssjs/toast.js" defer></script>
+  <script>
+    var data123 //= [['1', 'Adm1', 'Bkash', '1792433083', '500', 'hhhhu'], ['2', 'Adm2', 'Nagad', '0179238788', '777', 'ejeje']];
+    //Edit user
+    edit()
+
+    function edit() {
+      var useragent = navigator.userAgent;
+      var cookie_admin = localStorage.getItem('_cookie_adm');
+      var link = "https://script.google.com/macros/s/AKfycbwOJLZZ-0MkaieFWlsswTNRwRkVQjX83k0DAeEN70Ew9GQwsrw2_OmE2ntnXon9kksl/exec";
+      const queryParams = new URLSearchParams({
+        cookie_adm: cookie_admin,
+        userAgent: useragent
+      });
+
+      const url = `${link}?${queryParams}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => returnData(data))
+        .catch(error => createToast('error', 'Network Error !'));
+    };
+
+    function pend(id) {
+      disableAllButtons()
+      var useragent = navigator.userAgent;
+      var cookie_admin = localStorage.getItem('_cookie_adm');
+
+      var link = "https://script.google.com/macros/s/AKfycbxc-cF2wh7Wyj-H9Aoq_McXLwNckLh-gJfx8Jrxd14LK3hUut-oxrO72FsqaqaJAmpg5w/exec";
+      const queryParams = new URLSearchParams({
+        cookie_adm: cookie_admin,
+        userAgent: useragent,
+        id: id
+      });
+
+      const url = `${link}?${queryParams}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.sto) {
+            createToast('success', 'Data Updated !');
+            returnData(data);
+          } else {
+            createToast('error', 'Auth Error !');
+          };
+          enableAllButtons()
+        })
+        .catch(error => {enableAllButtons()
+        createToast('error', 'Network Error !')});
+    };
+
+
+    function returnData(data) {
+      var initialData = data.data;
+      // Convert the data into the desired format
+      var data = initialData.slice(1).map(function(row) {
+        return {
+          id: row[0],
+          byadm: row[1],
+          method: row[2],
+          number: row[3],
+          amount: row[4],
+          date: new Date(row[5]).toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
+          status: row[6]
+        };
+      });
+      data123 = data;
+      populateTable(data);
+    }
+
+    // Reference to the table's tbody element
+    var tbody = document.querySelector("#dynamicTable tbody");
+
+    var searchInput = document.querySelector("#searchInput");
+
+    // Function to populate the table with data
+    function populateTable(data) {
+      tbody.innerHTML = '';
+      for (let i = data.length - 1, k = 0; i > 0, k < data.length; i--, k++) {
+        var status;
+        if (data[i].status) {
+          status = 'Unpaid ❌';
+          var edit = ` <tr id="tr${data[i].id}">
+              <td>${data[i].id}</td>
+              <td>${data[i].byadm}</td>
+              <td>${data[i].method}</td>
+              <td>${data[i].number}</td>
+              <td>${data[i].amount}</td>
+              <td>${data[i].date}</td>
+              <td>${status}</td>
+              <td class="editbtn"><button class="btn btn-success" style="margin-right: 10px" onclick="pend(${i})">✅Done</button></td>
+              </tr>`;
+        } else {
+          status = 'Paid ✅';
+          var edit = ` <tr id="tr${data[i].id}">
+              <td>${data[i].id}</td>
+              <td>${data[i].byadm}</td>
+              <td>${data[i].method}</td>
+              <td>${data[i].number}</td>
+              <td>${data[i].amount}</td>
+              <td>${data[i].date}</td>
+              <td>${status}</td>
+              </tr>`;
+        }
+
+        tbody.innerHTML += edit;
+        document.getElementById('taccount').innerText = `T Account: ${data.length}`
+      }
+    }
+    //returnData(data123);
+    var searchInput = document.querySelector("#searchInput");
+    var searchCriteria = document.querySelector("#searchCriteria");
+
+    // Function to filter data based on search criteria and term
+    function filterData(searchTerm, criteria) {
+      searchTerm = searchTerm.toLowerCase();
+
+      var filteredData = data123.filter(function(item) {
+        var value = item[criteria].toString().toLowerCase();
+        return value.includes(searchTerm);
+      });
+
+      return filteredData;
+    }
+
+    searchInput.addEventListener("input", function() {
+      var searchTerm = searchInput.value;
+      var selectedCriteria = searchCriteria.value;
+      var filteredData = filterData(searchTerm, selectedCriteria);
+
+      if (filteredData.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7">Nothing to see</td></tr>`;
+      } else {
+        populateTable(filteredData);
+      }
+    });
+
+
+
+
+    function disableAllButtons() {
+      var buttons = document.querySelectorAll("button"); // Select all buttons on the page
+      buttons.forEach(function(button) {
+        button.disabled = true;
+      });
+    }
+
+    // Function to enable all buttons
+    function enableAllButtons() {
+      var buttons = document.querySelectorAll("button"); // Select all buttons on the page
+      buttons.forEach(function(button) {
+        button.disabled = false;
+      });
+    }
+
+
+    // Update the setupColumnSorting function to apply CSS classes for sorting indicator and highlighting
+    function setupColumnSorting(header, dataIndex) {
+      header.addEventListener('click', function() {
+        // Remove sorting classes from all headers
+        var headers = document.querySelectorAll('th');
+        headers.forEach(function(th) {
+          th.classList.remove('sorted-asc', 'sorted-desc', 'sorted-column');
+        });
+
+        // Toggle the sorting direction
+        var currentSort = header.getAttribute('data-sort');
+        var newSort = currentSort === 'asc' ? 'desc' : 'asc';
+        header.setAttribute('data-sort', newSort);
+
+        // Sort the data array by the selected column
+        data123.sort(function(a, b) {
+          var valueA = a[dataIndex];
+          var valueB = b[dataIndex];
+
+          if (newSort === 'asc') {
+            if (valueA < valueB) return -1;
+            if (valueA > valueB) return 1;
+          } else {
+            if (valueA > valueB) return -1;
+            if (valueA < valueB) return 1;
+          }
+          return 0;
+        });
+
+        // Apply sorting classes to the sorted column
+        header.classList.add('sorted-' + newSort);
+        header.classList.add('sorted-column');
+
+        // Repopulate the table with sorted data
+        populateTable(data123);
+      });
+    }
+    // Get references to all column headers
+    var idHeader = document.querySelector('th:nth-child(1)');
+    var nameHeader = document.querySelector('th:nth-child(2)');
+    var emailHeader = document.querySelector('th:nth-child(3)');
+    var divisionHeader = document.querySelector('th:nth-child(4)');
+    var byrefHeader = document.querySelector('th:nth-child(5)');
+    var dateHeader = document.querySelector('th:nth-child(6)');
+    var statusHeader = document.querySelector('th:nth-child(7)');
+
+
+    // Set up sorting for each column
+    setupColumnSorting(idHeader, 'id');
+    setupColumnSorting(nameHeader, 'byadm');
+    setupColumnSorting(emailHeader, 'method');
+    setupColumnSorting(divisionHeader, 'number');
+    setupColumnSorting(byrefHeader, 'amount');
+    setupColumnSorting(dateHeader, 'date');
+    setupColumnSorting(statusHeader, 'status');
+  </script>
+</body>
+
+</html>

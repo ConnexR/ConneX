@@ -1,0 +1,564 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;800&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&display=swap');
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  --header-height: 3rem;
+
+  /*========== Colors ==========*/
+  --hue: 174;
+  --sat: 63%;
+  --first-color: hsl(var(--hue), var(--sat), 40%);
+  --first-color-alt: hsl(var(--hue), var(--sat), 36%);
+  --title-color: hsl(var(--hue), 12%, 15%);
+  --text-color: hsl(var(--hue), 8%, 35%);
+  --body-color: hsl(var(--hue), 100%, 99%);
+  --container-color: #FFF;
+
+  /*========== Font and typography ==========*/
+  --body-font: 'Poppins', sans-serif;
+  --h1-font-size: 1.5rem;
+  --normal-font-size: .938rem;
+  --tiny-font-size: .625rem;
+
+  /*========== z index ==========*/
+  --z-tooltip: 10;
+  --z-fixed: 100;
+}
+
+@media screen and (min-width: 968px) {
+  :root {
+    --h1-font-size: 2.25rem;
+    --normal-font-size: 1rem;
+  }
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: var(--header-height) 0 0 0;
+  font-family: var(--body-font);
+  font-size: var(--normal-font-size);
+  background-color: var(--body-color);
+  color: var(--text-color);
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/*=============== REUSABLE CSS CLASSES ===============*/
+.section {
+  padding: 4.5rem 0 2rem;
+}
+
+
+.section__height {
+  height: 100%;
+}
+
+/*=============== LAYOUT ===============*/
+.container {
+  max-width: 968px;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+
+
+/*=============== HEADER ===============*/
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--container-color);
+  z-index: var(--z-fixed);
+  transition: .4s;
+}
+
+/*=============== NAV ===============*/
+.nav {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav__img {
+  width: 32px;
+  border-radius: 50%;
+}
+
+.nav__logo {
+  color: var(--title-color);
+  font-weight: 600;
+}
+
+@media screen and (max-width: 767px) {
+  .nav__menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: var(--container-color);
+    box-shadow: 0 -1px 12px hsla(var(--hue), var(--sat), 15%, 0.15);
+    width: 100%;
+    height: 4rem;
+    padding: 0 1rem;
+    display: grid;
+    align-content: center;
+    border-radius: 1.25rem 1.25rem 0 0;
+    transition: .4s;
+  }
+}
+
+.nav__list,
+.nav__link {
+  display: flex;
+}
+
+.nav__link {
+  flex-direction: column;
+  align-items: center;
+  row-gap: 4px;
+  color: var(--title-color);
+  font-weight: 600;
+}
+
+.nav__list {
+  justify-content: space-around;
+}
+
+.nav__name {
+  font-size: var(--tiny-font-size);
+}
+
+.nav__icon {
+  font-size: 1.5rem;
+}
+
+/*Active link*/
+.active-link {
+  position: relative;
+  color: var(--first-color);
+  transition: .3s;
+}
+
+/* Change background header */
+.scroll-header {
+  box-shadow: 0 4px 10px hsla(var(--hue), var(--sat), 15%, 0.15);
+}
+
+/*=============== MEDIA QUERIES ===============*/
+/* For small devices */
+/* Remove if you choose, the minimalist design */
+@media screen and (max-width: 320px) {
+  .nav__name {
+    display: none;
+  }
+}
+
+/* For medium devices */
+@media screen and (min-width: 576px) {
+  .nav__list {
+    justify-content: center;
+    column-gap: 3rem;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  body {
+    margin: 0;
+  }
+
+  .section {
+    padding: 7rem 0 2rem;
+  }
+
+  .nav {
+    height: calc(var(--header-height) + 1.5rem);
+    /* 4.5rem */
+  }
+
+  .nav__img {
+    display: none;
+  }
+
+  .nav__icon {
+    display: none;
+  }
+
+  .nav__name {
+    font-size: var(--normal-font-size);
+    /* display: block; */
+    /* Minimalist design, visible labels */
+  }
+
+  .nav__link:hover {
+    color: var(--first-color);
+  }
+
+  /* First design, remove if you choose the minimalist design */
+  .active-link::before {
+    content: '';
+    position: absolute;
+    bottom: -.75rem;
+    width: 4px;
+    height: 4px;
+    background-color: var(--first-color);
+    border-radius: 50%;
+  }
+}
+
+
+
+/*Running text*/
+
+.running-text-container {
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.running-text {
+  animation: running-text-animation 8s linear infinite;
+  white-space: nowrap;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--title-color);
+}
+
+@keyframes running-text-animation {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.youtube {
+  margin-bottom: 30px;
+}
+
+.youtube h1 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: var(--title-color);
+
+}
+
+.official {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: var(--title-color);
+}
+
+.social {
+  margin-top: 20px;
+}
+
+.social a {
+  margin-left: 50px;
+  padding-bottom: 10px;
+  font-size: 23px;
+  display: block;
+  text-decoration: none;
+  outline: none;
+  color: var(--title-color);
+}
+
+.social a span {
+  color: #007bff;
+}
+
+/*Copy right*/
+
+.footer {
+  background-color: #f2f2f2;
+  padding: 10px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.footer a {
+  color: #007bff;
+  /* Change link color to your preferred color */
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+
+/*Wallet*/
+
+.wallet {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  height: 200px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.withdrawal-button {
+  margin-top: 40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.withdrawal-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card input {
+  width: 70%;
+  height: 30px;
+}
+
+
+
+/**/
+
+.input::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300px;
+  background: #0f1041;
+}
+
+.input-header {
+  position: relative;
+  padding-top: 80px;
+  color: #fff;
+}
+
+.input-header h1 {
+  padding-bottom: 25px;
+  font-size: 3.25em;
+  font-weight: 100;
+}
+
+.input-content {
+  position: relative;
+  padding: 44px 55px;
+  background: #fff;
+  z-index: 10;
+}
+
+.input-content h2 {
+  padding-bottom: 45px;
+  font-size: 1.625em;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.input-content h2 span {
+  display: inline-block;
+  margin-left: 10px;
+  padding: 5px 6px 3px;
+  border: 1px solid #ffca00;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  vertical-align: middle;
+  color: #ffca00;
+}
+
+.input-content .inputbox {
+  overflow: hidden;
+  position: relative;
+  padding: 15px 0 28px 100px;
+}
+
+.input-content .inputbox-title {
+  position: absolute;
+  top: 15px;
+  left: 0;
+  width: 100px;
+  height: 30px;
+  color: #666;
+  font-weight: bold;
+  line-height: 30px;
+}
+
+.input-content .inputbox-content {
+  position: relative;
+  width: 100%;
+}
+
+.input-content .inputbox-content input {
+  width: 100%;
+  height: 30px;
+  box-sizing: border-box;
+  line-height: 30px;
+  font-size: 14px;
+  border: 0;
+  background: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+.input-content .inputbox-content input:focus~label,
+.input-content .inputbox-content input:valid~label {
+  color: #2962ff;
+  transform: translateY(-20px);
+  font-size: 0.825em;
+  cursor: default;
+}
+
+.input-content .inputbox-content input:focus~.underline {
+  width: 100%;
+}
+
+.input-content .inputbox-content label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 30px;
+  line-height: 30px;
+  color: #ccc;
+  cursor: text;
+  transition: all 200ms ease-out;
+  z-index: 10;
+}
+
+.input-content .inputbox-content .underline {
+  content: "";
+  display: block;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #2962ff;
+  transition: all 200ms ease-out;
+}
+
+.input-content .btns {
+  padding: 30px 0 0 0px;
+}
+
+.input-content .btns .btn {
+  display: inline-block;
+  margin-right: 2px;
+  margin-bottom: 10px;
+  padding: 10px 25px;
+  background: none;
+  border: 1px solid #c0c0c0;
+  border-radius: 2px;
+  color: #666;
+  font-size: 1.125em;
+  outline: none;
+  transition: all 100ms ease-out;
+}
+
+.input-content .btns .btn:hover,
+.input-content .btns .btn:focus {
+  transform: translateY(-3px);
+}
+
+.input-content .btns .btn-confirm {
+  border: 1px solid #2962ff;
+  background: #2962ff;
+  color: #fff;
+}
+
+.input-content .btns .btn-cancel {
+  border: 1px solid #2962ff;
+  background: red;
+  color: #fff;
+}
+
+
+
+/**/
+
+.coloum {
+  display: grid;
+  grid-template-columns: calc((100% / 3) - 50px) calc((100% / 3) - 55px) calc((100% / 3) - 60px) calc((100% / 3) - 15px);
+  gap: 10px;
+  /* Adjust the gap between columns as needed */
+  margin-bottom: 5px;
+}
+
+.column {
+  padding: 10px;
+  background-color: #f2f2f2;
+}
+
+.log_out{
+  display: flex;
+  align-items: center;
+}
+.log_out i{
+  position: relative;
+  font-size: 22px;
+  color: black;
+  right: 10px;
+}

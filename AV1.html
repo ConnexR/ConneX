@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Sign up | ConneX</title>
+  <link rel="stylesheet" href="cssjs/login.css">
+  <link rel="stylesheet" href="cssjs/toast.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="cssjs/toast.js" defer></script>
+  <style>
+    html {
+      background-image: url('asset/bg1.jpg');
+
+    }
+
+    .wrapper .title {
+      border-radius: 15px;
+    }
+
+    form .field label {
+      padding: 5px 10px 0 10px;
+      border-radius: 9px;
+    }
+  </style>
+</head>
+
+<body>
+  <ul class="notifications"></ul>
+  <div class="wrapper" id="create" style="background-color: transparent">
+    <div class="title">
+      Create Account Form
+    </div>
+    <form>
+      <div class="field">
+        <input type="text" id="input1" required>
+        <label>Name</label>
+      </div>
+      <div class="field">
+        <input type="email" id="input2" required>
+        <label>Email</label>
+      </div>
+      <div class="field">
+        <input type="text" id="input3" required>
+        <label>Division</label>
+      </div>
+      <div class="field">
+        <input type="password" id="input4" required><i id="eye12" class="fa-solid fa-eye" onclick="passShow('input4','eye12')"></i>
+        <label>Password</label>
+      </div>
+      <div class="field">
+        <input type="text" id="input5" required>
+        <label>Reffer Code</label>
+      </div>
+      <div class="field field1">
+        <button class="submit" onclick="validation(event)">Create Account</button>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+  var input1 = document.getElementById('input1');
+  var input2 = document.getElementById('input2');
+  var input3 = document.getElementById('input3');
+  var input4 = document.getElementById('input4');
+  var input5 = document.getElementById('input5');
+
+  fetch('asset/user.json')
+    .then(response => response.json())
+    .then(data => { cheack(data) })
+
+  function cheack(homeJson) {
+    if (localStorage.getItem('_cookie_adm')) {
+      return;
+    } else {
+      window.location.href = `${window.location.origin}/ConneX/${homeJson.admhome}`
+    }
+  }
+
+
+  function validation(event) {
+
+    const inputValue1 = input1.value.trim();
+    const inputValue2 = input2.value.trim();
+    const inputValue3 = input3.value.trim();
+    const inputValue4 = input4.value.trim();
+    const inputValue5 = input5.value.trim();
+
+
+    if (inputValue1 === '') {
+      createToast("info", "Pls , Enter a Name !");
+      return;
+    }
+
+
+    if (inputValue2 === '') {
+      createToast("info", "Pls , Enter a Email !");
+      return;
+    }
+
+
+    if (inputValue3 === '') {
+      createToast("info", "Pls , Enter a Division !");
+      return;
+    }
+
+    if (inputValue4 === '') {
+      createToast("info", "Password must not be empty !");
+      return;
+    }
+
+
+    if (inputValue5.length !== 6) {
+      createToast("info", "Reffer ID's Length is 6 character !");
+      event.preventDefault();
+      return;
+    };
+    event.preventDefault();
+    login(input1.value, input2.value, input3.value, inputValue4, input5.value);
+  };
+
+
+  function login(var1, var2, var3, var4, var5) {
+    /* get True or False or hash code for save in local storage */
+
+    //localStorage.setItem('_cookie_adm','sha256');
+    disableAllButtons()
+    var useragent = navigator.userAgent;
+    var cookie_admin = localStorage.getItem('_cookie_adm');
+
+    var link = "https://script.google.com/macros/s/AKfycbzryN-l8BjO1OqIy4ZVZvD2gIZ2CU1ZB0y9n_o5V-U9s19VL8oCEeeIKGmm-IpKruG2BQ/exec";
+    const queryParams = new URLSearchParams({
+      cookie_adm: cookie_admin,
+      userAgent: useragent,
+      name: var1,
+      email: var2,
+      division: var3,
+      password: var4,
+      refferid: var5
+    });
+
+    const url = `${link}?${queryParams}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => reTurn(data));
+
+    function reTurn(data) {
+      enableAllButtons()
+      if (data.sto) {
+        const textToCopy = `ID : ${data.usr_id}\nPassword : ${data.usr_pas}`;
+        copyToClipboard(textToCopy);
+        document.getElementById('create').innerHTML = `<div class="title">${data.usr_id}</br>Password : ${data.usr_pas}
+              </div>`;
+        createToast('success', 'Data Submitted Successfully ✅');
+      } else {
+        document.getElementById('create').innerHTML = `<div class="title">Auth Error !</div>`;
+        createToast('error', 'You have no access to Create Account 🚫');
+      }
+    };
+
+    function copyToClipboard(text) {
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    };
+
+  };
+</script>
+
+</html>

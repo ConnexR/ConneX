@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Form | ConneX</title>
+  <link rel="stylesheet" href="cssjs/login.css">
+  <link rel="stylesheet" href="cssjs/toast.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    html {
+      background-image: url('asset/bg1.jpg');
+
+    }
+
+  </style>
+  <script src="cssjs/toast.js" defer></script>
+</head>
+
+<body>
+  <ul class="notifications"></ul>
+  <div class="wrapper" >
+    <div class="title">
+      Admin Login Form
+    </div>
+    <form>
+      <div class="field">
+        <input type="text" id="input1" required>
+        <label>User ID</label>
+      </div>
+      <div class="field">
+        <input type="password" id="input2" required><i id="eye12" class="fa-solid fa-eye"  onclick="passShow('input2','eye12')"></i>
+        <label>Password</label>
+      </div>
+      <div class="content">
+        <div class="checkbox">
+          <input type="checkbox" value="True" id="remember-me" required>
+          <label for="remember-me">Accept All <a href="term.html">Term & Condition</a></label>
+        </div>
+      </div>
+      <div class="field field1">
+        <button class="submit" onclick="validation(event)">Login</button>
+      </div>
+    </form>
+  </div>
+</body>
+<script>
+  var input1 = document.getElementById('input1');
+  var input2 = document.getElementById('input2');
+  const checkbox = document.getElementById('remember-me');
+
+  function validation(event) {
+    const inputValue = input1.value.trim();
+    const passwordValue = input2.value.trim();
+
+    if (inputValue.length !== 6) {
+      createToast("info", "User ID's Length is 6 character !");
+      return
+    }
+
+    if (passwordValue === '') {
+      createToast("info", "Password must not be empty !");
+      return;
+    }
+    if (!(checkbox.checked)) {
+      createToast("info", "Pls , Accept Our all Term & Condition !");
+      return;
+    }
+    event.preventDefault();
+    login(inputValue, input2.value);
+  };
+
+
+  function login(var1, var2) {
+    //console.log(var1,var2)
+    disableAllButtons()
+    var link = "https://script.google.com/macros/s/AKfycbwx-_D3ytn6ILKBWUr3dtUCMBiuGtFmWQgv2LwKxdOM026x7WpNqxB4gDc1eqMUmUjW/exec"
+    const queryParams = new URLSearchParams({
+      user_id: var1,
+      password: var2
+    });
+
+    const url = `${link}?${queryParams}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => reTurn(data));
+
+
+    function reTurn(responseData) {
+      enableAllButtons()
+      if (responseData.sto === true) {
+
+        localStorage.setItem('_cookie_adm', responseData.vAlue);
+        createToast('success', 'Data Submitted Successfully ✅');
+        fetch('asset/user.json')
+          .then(response => response.json())
+          .then(data => { window.location.href = `${window.location.origin}/ConneX/${data.admlog}` })
+        
+      } else {
+
+        createToast('error', 'Wrong Password 🚫');
+      };
+    }
+  };
+</script>
+
+</html>
