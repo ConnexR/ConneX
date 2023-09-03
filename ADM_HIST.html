@@ -80,6 +80,17 @@
   </footer>
   <script src="cssjs/toast.js" defer></script>
   <script>
+  fetch('asset/user.json')
+    .then(response => response.json())
+    .then(data => { cheack(data) })
+
+  function cheack(homeJson) {
+    if (localStorage.getItem('_cookie_adm')) {
+      return;
+    } else {
+      window.location.href = `${window.location.origin}/ConneX/${homeJson.admhome}`
+    }
+  }
     var data123 //= [['1', 'Adm1', 'Bkash', '1792433083', '500', 'hhhhu'], ['2', 'Adm2', 'Nagad', '0179238788', '777', 'ejeje']];
     //Edit user
     edit()
@@ -87,8 +98,9 @@
     function edit() {
       var useragent = navigator.userAgent;
       var cookie_admin = localStorage.getItem('_cookie_adm');
-      var link = "https://script.google.com/macros/s/AKfycbwOJLZZ-0MkaieFWlsswTNRwRkVQjX83k0DAeEN70Ew9GQwsrw2_OmE2ntnXon9kksl/exec";
+      var link = "https://script.google.com/macros/s/AKfycbyePE7Zec5zpmFWd_9bb2Fn-RLjCC6pLmYGFZ9MR9oRYhb5VaDymO5rafTZXUd-L9br/exec" //
       const queryParams = new URLSearchParams({
+        action: 'admin',
         cookie_adm: cookie_admin,
         userAgent: useragent
       });
