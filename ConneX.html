@@ -182,9 +182,10 @@
     function history() {
       loading()
       var useragent = navigator.userAgent;
-      var cookie_admin = localStorage.getItem('_cookie_adm');
-      var link = "https://script.google.com/macros/s/AKfycbwOJLZZ-0MkaieFWlsswTNRwRkVQjX83k0DAeEN70Ew9GQwsrw2_OmE2ntnXon9kksl/exec";
+      var cookie_admin = localStorage.getItem('_cookie_usr');
+      var link = "https://script.google.com/macros/s/AKfycbyePE7Zec5zpmFWd_9bb2Fn-RLjCC6pLmYGFZ9MR9oRYhb5VaDymO5rafTZXUd-L9br/exec";
       const queryParams = new URLSearchParams({
+        action: 'user',
         cookie_adm: cookie_admin,
         userAgent: useragent
       });
@@ -193,7 +194,8 @@
       fetch(url)
         .then(response => response.json())
         .then(data => reTurn2(data.data))
-        .catch(error => createToast('error', 'Network Error !'));
+        .catch(error => {//console.log(error)
+          createToast('error', 'Network Error !')});
     };
 
     function reTurn2(data) {
@@ -210,19 +212,11 @@
         // This will print the numbers 0 to 4.
         var id = pad(data[i][0], 6, '0');
 
-        var inputDate = new Date(data[i][5]);
-        var months = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-        var day = inputDate.getUTCDate();
-        var month = months[inputDate.getUTCMonth()];
-
-        var date = `${day} ${month}`;
+        var inputDate = new Date(data[i][3]).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
 
 
         var pend;
-        if (data[i][6]) {
+        if (data[i][4]) {
           pend = 'Pending ❌'
         } else {
           pend = 'Success ✅'
@@ -232,8 +226,8 @@
 
         history += `<div class="coloum">
                                   <div class="column">${id}</div>
-                                  <div class="column">${data[i][4]}</div>
-                                  <div class="column">${date}</div>
+                                  <div class="column">${data[i][2]}</div>
+                                  <div class="column">${inputDate}</div>
                                   <div class="column">${pend}</div>
                                 </div>`;
         section.innerHTML = history
