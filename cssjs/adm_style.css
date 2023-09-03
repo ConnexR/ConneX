@@ -23,13 +23,13 @@
 
 /* CSS for sorting indicator and highlighted column */
 .sorted-asc::after {
-  content: "\25B2";
+  content: "\25BC";
   /* Unicode for ▲ (upward triangle) */
   margin-left: 5px;
 }
 
 .sorted-desc::after {
-  content: "\25BC";
+  content: "\25B2";
   /* Unicode for ▼ (downward triangle) */
   margin-left: 5px;
 }
